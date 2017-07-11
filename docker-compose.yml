@@ -1,0 +1,16 @@
+tikbot:
+  env_file: .env
+  build: .
+  ports:
+    - '9090:8080'
+  volumes:
+    - .hubot/scripts/:/opt/hubot/scripts/
+  restart: always
+  links:
+    - tikbot-redis
+tikbot-redis:
+  image: redis:latest
+  command: redis-server --appendonly yes --auto-aof-rewrite-min-size 32mb --auto-aof-rewrite-percentage 50
+  volumes:
+    - ./redis-data:/data
+  restart: always
